@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<script type="text/javascript" src="https://gc.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=fpqU9nXYRTfEzZEX3Lvz49yB38R9_Dc_B7K6-D9FhG7b9Smmkt1WJd2REEZi3Yoa2AVChY2g7rUhVxTaGr7d5KeXFihZ48tywP-5egWoEJt-2UzbLtYu84zYXKbKyzpX3YCDYbQCm6KLFOLBf_3-RT5E40dwxhetQUiq4dXH9mc9Zej2MES0NcpTh3rgUG2JdqCuOAMzWP2j-ucqJz9ANVY21qoWdHlsCcNb506j6E5imBqvyZ61plM-30u8ZZ1p9_ekXb_QY-eT4jcrizxfBoPg3QFnYqP1GpLH37-ji4SoETOJklQnCwdVayHRKthRi1J44Wmsk8-bnfjTWdIomw" charset="UTF-8"></script><style id="loginStyles">
+#loginScreen{position:fixed;inset:0;background:linear-gradient(135deg,#125c48,#22916e);display:flex;align-items:center;justify-content:center;padding:20px;z-index:9999}
+.login-box{width:min(410px,100%);background:#fff;border-radius:20px;padding:32px;box-shadow:0 18px 50px #0004}
+.login-logo{text-align:center;font-size:42px;margin-bottom:8px}
+.login-box h2{text-align:center;margin:0 0 7px;color:#18322a}
+.login-sub{text-align:center;color:#6c7d76;margin:0 0 24px}
+.login-form{display:grid;gap:14px}
+.login-form label{font-size:13px;font-weight:bold;color:#42554e}
+.login-form input{width:100%;margin-top:6px}
+.login-btn{width:100%;background:#16745a;color:#fff;padding:13px;border-radius:10px;border:0;font-weight:bold;cursor:pointer}
+.login-btn:hover{background:#105d48}
+.login-error{display:none;color:#c94b4b;background:#fff0f0;border-radius:9px;padding:10px;font-size:13px;text-align:center}
+.logout-btn{margin-left:auto}
+@media(max-width:600px){.logout-btn{margin-left:0}}
+</style>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pickleball Student Progress Tracker</title>
+<style>
+:root{
+  --green:#16745a; --green2:#1f8b6b; --light:#f4f8f6; --dark:#18322a;
+  --muted:#6c7d76; --border:#dce7e2; --white:#fff; --danger:#c94b4b;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--light);color:var(--dark)}
+header{background:linear-gradient(135deg,#125c48,#22916e);color:white;padding:26px 6%;box-shadow:0 3px 12px #0002}
+header h1{margin:0 0 6px;font-size:28px} header p{margin:0;opacity:.88}
+.container{max-width:1200px;margin:28px auto;padding:0 20px}
+.toolbar{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:22px}
+input,select,textarea{font:inherit;border:1px solid var(--border);border-radius:10px;padding:11px 13px;outline:none;background:white}
+input:focus,select:focus,textarea:focus{border-color:var(--green2);box-shadow:0 0 0 3px #1f8b6b18}
+.search{flex:1;min-width:240px}
+button{border:0;border-radius:10px;padding:11px 17px;font-weight:bold;cursor:pointer}
+.primary{background:var(--green);color:white}.primary:hover{background:#105d48}
+.secondary{background:white;border:1px solid var(--border);color:var(--dark)}
+.danger{background:#fff0f0;color:var(--danger)}
+.layout{display:grid;grid-template-columns:320px 1fr;gap:20px}
+.card{background:white;border:1px solid var(--border);border-radius:16px;padding:20px;box-shadow:0 4px 15px #18322a0a}
+.card h2,.card h3{margin-top:0}
+.student-list{max-height:600px;overflow:auto}
+.student{padding:14px;border:1px solid var(--border);border-radius:12px;margin-bottom:10px;cursor:pointer;transition:.15s}
+.student:hover,.student.active{border-color:var(--green2);background:#eef8f4}
+.student-name{font-weight:bold}.student-meta{font-size:12px;color:var(--muted);margin-top:4px}
+.empty{color:var(--muted);text-align:center;padding:30px 10px}
+.profile-head{display:flex;justify-content:space-between;gap:15px;align-items:flex-start;flex-wrap:wrap}
+.profile-head h2{margin-bottom:5px}
+.badge{display:inline-block;background:#e8f5ef;color:var(--green);padding:5px 9px;border-radius:20px;font-size:12px;font-weight:bold}
+.skills{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin:20px 0}
+.skill{border:1px solid var(--border);border-radius:13px;padding:15px}
+.skill-top{display:flex;justify-content:space-between;margin-bottom:10px;font-weight:bold}
+.stars{display:flex;gap:5px}
+.star{width:30px;height:30px;border-radius:7px;border:1px solid #d5e2dc;background:white;color:#c7d1cc;cursor:pointer;font-size:16px}
+.star.on{background:#e7f5ef;color:#f0a72c;border-color:#bfe2d2}
+.overall{padding:15px;background:#f2f8f5;border-radius:12px;margin-bottom:20px}
+.bar{height:10px;background:#dfeae5;border-radius:99px;overflow:hidden;margin-top:8px}
+.bar span{display:block;height:100%;background:linear-gradient(90deg,#1f8b6b,#62b991);border-radius:99px}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{text-align:left;padding:11px 8px;border-bottom:1px solid var(--border)}
+th{color:var(--muted);font-size:12px;text-transform:uppercase}
+.modal{position:fixed;inset:0;background:#0007;display:none;align-items:center;justify-content:center;padding:20px;z-index:10}
+.modal.show{display:flex}
+.modal-box{background:white;width:min(520px,100%);border-radius:18px;padding:24px;max-height:90vh;overflow:auto}
+.form-grid{display:grid;gap:13px}
+label{font-size:13px;font-weight:bold;color:#42554e}
+textarea{min-height:90px;resize:vertical}
+.modal-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:18px}
+@media(max-width:850px){.layout{grid-template-columns:1fr}.skills{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<div id="loginScreen">
+  <div class="login-box">
+    <div class="login-logo">🏓</div>
+    <h2>Pickleball Progress Tracker</h2>
+    <p class="login-sub">Coach Login</p>
+    <form class="login-form" onsubmit="login(event)">
+      <div>
+        <label>Email</label>
+        <input id="loginUsername" type="email" autocomplete="username" placeholder="Enter email" required>
+      </div>
+      <div>
+        <label>Password</label>
+        <input id="loginPassword" type="password" autocomplete="current-password" placeholder="Enter password" required>
+      </div>
+      <div id="loginError" class="login-error">Incorrect username or password.</div>
+      <button class="login-btn" type="submit">Login</button>
+    </form>
+  </div>
+</div>
+
+<header>
+  <h1>🏓 Pickleball Student Progress Tracker</h1>
+  <p>Track skills, assessments, notes, and student development.</p><button class="secondary logout-btn" onclick="logout()">Log Out</button>
+</header>
+
+<div class="container">
+  <div class="toolbar">
+    <input id="search" class="search" type="search" placeholder="🔍 Search student name...">
+    <button class="primary" onclick="openStudentModal()">＋ Add Student</button>
+  </div>
+
+  <div class="layout">
+    <div class="card">
+      <h3>Students <span id="studentCount" class="badge">0</span></h3>
+      <div id="studentList" class="student-list"></div>
+    </div>
+
+    <div class="card" id="profile">
+      <div class="empty">Select a student to view their progress.</div>
+    </div>
+  </div>
+</div>
+
+<div id="studentModal" class="modal">
+  <div class="modal-box">
+    <h2 id="modalTitle">Add Student</h2>
+    <div class="form-grid">
+      <div><label>Student Name</label><input id="studentName" style="width:100%" placeholder="e.g. Juan Dela Cruz"></div>
+      <div><label>Status</label>
+        <select id="studentStatus" style="width:100%">
+          <option>Active</option><option>Inactive</option>
+        </select>
+      </div>
+      <div><label>Notes</label><textarea id="studentNotes" placeholder="General student notes..."></textarea></div>
+    </div>
+    <div class="modal-actions">
+      <button class="secondary" onclick="closeStudentModal()">Cancel</button>
+      <button class="primary" onclick="saveStudent()">Save Student</button>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+// Firebase imports
+import { initializeApp }
+  from "https://www.gstatic.com/firebasejs/12.5.0/firebase-app.js";
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+  signOut,
+  onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/12.5.0/firebase-auth.js";
+import {
+  getFirestore,
+  collection,
+  getDocs,
+  addDoc,
+  updateDoc,
+  deleteDoc,
+  doc
+} from "https://www.gstatic.com/firebasejs/12.5.0/firebase-firestore.js";
+
+// ============================================================
+// PASTE YOUR FIREBASE CONFIG HERE
+// Firebase Console → Project settings → Your apps → Web app
+// ============================================================
+const firebaseConfig = {
+  apiKey: "AIzaSyBxVLsNp44bujiEHSmvBA2Rj_dpN7oUkOc",
+  authDomain: "pickleball-student-tracker.firebaseapp.com",
+  projectId: "pickleball-student-tracker",
+  storageBucket: "pickleball-student-tracker.firebasestorage.app",
+  messagingSenderId: "65790679121",
+  appId: "1:65790679121:web:95f38687a8b4c03b38c070"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const studentsCollection = collection(db, "students");
+
+// Firebase Authentication
+const auth = getAuth(app);
+
+function showLogin(){
+  document.getElementById("loginScreen").style.display = "flex";
+  setTimeout(()=>document.getElementById("loginUsername").focus(),50);
+}
+function hideLogin(){
+  document.getElementById("loginScreen").style.display = "none";
+}
+
+window.login = async function(event){
+  event.preventDefault();
+  const email = document.getElementById("loginUsername").value.trim();
+  const password = document.getElementById("loginPassword").value;
+  const error = document.getElementById("loginError");
+  const button = event.submitter;
+
+  error.style.display = "none";
+  if(button) button.disabled = true;
+
+  try {
+    await signInWithEmailAndPassword(auth, email, password);
+    document.getElementById("loginPassword").value = "";
+  } catch (err) {
+    console.error(err);
+    error.textContent = "Incorrect email or password.";
+    error.style.display = "block";
+    document.getElementById("loginPassword").select();
+  } finally {
+    if(button) button.disabled = false;
+  }
+};
+
+window.logout = async function(){
+  await signOut(auth);
+};
+
+const skills = ["Forehand Drive","Backhand Drive","Dink","Serve","Return","Volley"];
+let students = [];
+let selectedId = null;
+let editingId = null;
+
+// Load all students from Firestore
+async function loadStudents(){
+  try {
+    const snapshot = await getDocs(studentsCollection);
+    students = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+
+    // Make sure old/incomplete records don't break the UI
+    students.forEach(s => {
+      s.progress = s.progress || {};
+      skills.forEach(skill => {
+        const key = skillKey(skill);
+        if (typeof s.progress[key] !== "number") s.progress[key] = 0;
+      });
+      s.history = Array.isArray(s.history) ? s.history : [];
+      s.status = s.status || "Active";
+      s.notes = s.notes || "";
+    });
+
+    selectedId = students[0]?.id || null;
+    renderStudents();
+    renderProfile();
+  } catch(error) {
+    console.error("Firestore load error:", error);
+    alert("Could not load students from Firebase. Check your Firebase configuration and Firestore rules.");
+  }
+}
+
+// Save all current student data to Firestore.
+// This keeps the existing app structure while storing records online.
+async function saveData(){
+  try {
+    await Promise.all(students.map(async s => {
+      const { id, ...data } = s;
+      await updateDoc(doc(db, "students", id), data);
+    }));
+  } catch(error) {
+    console.error("Firestore save error:", error);
+    alert("Could not save the changes to Firebase.");
+  }
+}
+
+function renderStudents(){
+  const q = document.getElementById("search").value.trim().toLowerCase();
+  const list = document.getElementById("studentList");
+  const filtered = students.filter(s => s.name.toLowerCase().includes(q));
+  document.getElementById("studentCount").textContent = students.length;
+  if(!filtered.length){ list.innerHTML='<div class="empty">No students found.</div>'; return; }
+  list.innerHTML = filtered.map(s => `
+    <div class="student ${s.id===selectedId?'active':''}" onclick="selectStudent('${s.id}')">
+      <div class="student-name">${escapeHtml(s.name)}</div>
+      <div class="student-meta">${escapeHtml(s.status)} · ${s.history.length} assessment${s.history.length===1?'':'s'}</div>
+    </div>`).join("");
+}
+
+window.selectStudent = function(id){ selectedId=id; renderStudents(); renderProfile(); }
+
+function renderProfile(){
+  const s=students.find(x=>x.id===selectedId);
+  const box=document.getElementById("profile");
+  if(!s){box.innerHTML='<div class="empty">Select a student to view their progress.</div>';return;}
+  const current=s.progress;
+  const avg=Object.values(current).reduce((a,b)=>a+b,0)/skills.length;
+  box.innerHTML=`
+    <div class="profile-head">
+      <div><h2>${escapeHtml(s.name)}</h2><span class="badge">${escapeHtml(s.status)}</span></div>
+      <div>
+        <button class="secondary" onclick="openStudentModal('${s.id}')">Edit</button>
+        <button class="danger" onclick="deleteStudent('${s.id}')">Delete</button>
+      </div>
+    </div>
+    <p style="color:var(--muted)">${escapeHtml(s.notes || "No general notes.")}</p>
+    <div class="overall">
+      <strong>Overall Progress: ${avg.toFixed(1)} / 5</strong>
+      <div class="bar"><span style="width:${avg/5*100}%"></span></div>
+    </div>
+    <h3>Current Skills</h3>
+    <div class="skills">${skills.map(skillCard).join("")}</div>
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;margin:25px 0 10px;flex-wrap:wrap">
+      <h3 style="margin:0">Assessment History</h3>
+      <button class="primary" onclick="addAssessment()">＋ Save Assessment</button>
+    </div>
+    ${historyTable(s)}
+  `;
+}
+
+function skillCard(skill){
+  const key=skillKey(skill), value=students.find(x=>x.id===selectedId).progress[key] || 0;
+  return `<div class="skill"><div class="skill-top"><span>${skill}</span><span>${value}/5</span></div>
+    <div class="stars">${[1,2,3,4,5].map(n=>`<button class="star ${n<=value?'on':''}" onclick="setSkill('${key}',${n})">★</button>`).join("")}</div>
+  </div>`;
+}
+
+window.setSkill = async function(key,value){
+  const s=students.find(x=>x.id===selectedId);
+  if(!s) return;
+  s.progress[key]=value;
+  renderProfile();
+  renderStudents();
+  try {
+    await updateDoc(doc(db, "students", s.id), { progress: s.progress });
+  } catch(error) {
+    console.error("Firestore skill save error:", error);
+    alert("Could not save the skill rating to Firebase.");
+  }
+}
+
+window.addAssessment = async function(){
+  const s=students.find(x=>x.id===selectedId);
+  if(!s) return;
+  s.history.unshift({date:new Date().toISOString().slice(0,10),...s.progress});
+  try {
+    await updateDoc(doc(db, "students", s.id), { history: s.history });
+    renderProfile();
+    renderStudents();
+  } catch(error) {
+    console.error("Firestore assessment save error:", error);
+    alert("Could not save the assessment to Firebase.");
+  }
+}
+
+function historyTable(s){
+  if(!s.history.length) return '<div class="empty">No assessments yet. Rate the skills above, then click “Save Assessment”.</div>';
+  return `<div style="overflow:auto"><table><thead><tr><th>Date</th>${skills.map(x=>`<th>${x}</th>`).join("")}</tr></thead><tbody>
+    ${s.history.map(h=>`<tr><td>${h.date}</td>${skills.map(x=>`<td>${h[skillKey(x)]||0}/5</td>`).join("")}</tr>`).join("")}
+  </tbody></table></div>`;
+}
+
+function skillKey(s){return s.toLowerCase().replaceAll(" ","_");}
+
+window.openStudentModal = function(id=null){
+  editingId=id;
+  const s=id?students.find(x=>x.id===id):null;
+  document.getElementById("modalTitle").textContent=s?"Edit Student":"Add Student";
+  document.getElementById("studentName").value=s?.name||"";
+  document.getElementById("studentStatus").value=s?.status||"Active";
+  document.getElementById("studentNotes").value=s?.notes||"";
+  document.getElementById("studentModal").classList.add("show");
+  setTimeout(()=>document.getElementById("studentName").focus(),50);
+}
+window.closeStudentModal = function(){document.getElementById("studentModal").classList.remove("show");editingId=null}
+
+window.saveStudent = async function(){
+  const name=document.getElementById("studentName").value.trim();
+  if(!name){alert("Please enter the student name.");return;}
+
+  const status=document.getElementById("studentStatus").value;
+  const notes=document.getElementById("studentNotes").value.trim();
+
+  try {
+    if(editingId){
+      const s=students.find(x=>x.id===editingId);
+      s.name=name;
+      s.status=status;
+      s.notes=notes;
+
+      await updateDoc(doc(db, "students", s.id), {
+        name: s.name,
+        status: s.status,
+        notes: s.notes
+      });
+    }else{
+      const progress={}; skills.forEach(x=>progress[skillKey(x)]=0);
+      const newStudent={
+        name,
+        status,
+        notes,
+        progress,
+        history:[]
+      };
+
+      const docRef = await addDoc(studentsCollection, newStudent);
+      students.push({id:docRef.id, ...newStudent});
+      selectedId=docRef.id;
+    }
+
+    closeStudentModal();
+    renderStudents();
+    renderProfile();
+  } catch(error) {
+    console.error("Firestore student save error:", error);
+    alert("Could not save the student to Firebase.");
+  }
+}
+
+window.deleteStudent = async function(id){
+  const s=students.find(x=>x.id===id);
+  if(!s||!confirm(`Delete ${s.name}? This will remove all progress history.`))return;
+
+  try {
+    await deleteDoc(doc(db, "students", id));
+    students=students.filter(x=>x.id!==id);
+    selectedId=students[0]?.id||null;
+    renderStudents();
+    renderProfile();
+  } catch(error) {
+    console.error("Firestore delete error:", error);
+    alert("Could not delete the student from Firebase.");
+  }
+}
+
+function escapeHtml(str){return String(str).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));}
+
+document.getElementById("search").addEventListener("input",renderStudents);
+document.getElementById("studentModal").addEventListener("click",e=>{if(e.target.id==="studentModal")closeStudentModal()});
+
+// Start by loading students from Firebase
+onAuthStateChanged(auth, async (user) => {
+  if (user) {
+    hideLogin();
+    await loadStudents();
+    renderStudents();
+    renderProfile();
+  } else {
+    students = [];
+    selectedId = null;
+    showLogin();
+    renderStudents();
+    renderProfile();
+  }
+});
+</script>
+</body>
+</html>
