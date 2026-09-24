@@ -42,7 +42,7 @@ body{
 
 
 /* =========================================================
-   LOGIN SCREEN
+   LOGIN
 ========================================================= */
 
 #loginScreen{
@@ -58,7 +58,7 @@ body{
 
 .login-box{
   width:min(410px,100%);
-  background:#fff;
+  background:white;
   border-radius:20px;
   padding:32px;
   box-shadow:0 18px 50px #0004;
@@ -73,12 +73,11 @@ body{
 .login-box h2{
   text-align:center;
   margin:0 0 7px;
-  color:#18322a;
 }
 
 .login-sub{
   text-align:center;
-  color:#6c7d76;
+  color:var(--muted);
   margin:0 0 24px;
 }
 
@@ -90,7 +89,6 @@ body{
 .login-form label{
   font-size:13px;
   font-weight:bold;
-  color:#42554e;
 }
 
 .login-form input{
@@ -100,8 +98,8 @@ body{
 
 .login-btn{
   width:100%;
-  background:#16745a;
-  color:#fff;
+  background:var(--green);
+  color:white;
   padding:13px;
   border-radius:10px;
   border:0;
@@ -115,7 +113,7 @@ body{
 
 .login-error{
   display:none;
-  color:#c94b4b;
+  color:var(--danger);
   background:#fff0f0;
   border-radius:9px;
   padding:10px;
@@ -135,6 +133,12 @@ header{
   box-shadow:0 3px 12px #0002;
 }
 
+.header-content{
+  max-width:1200px;
+  margin:auto;
+  position:relative;
+}
+
 header h1{
   margin:0 0 6px;
   font-size:28px;
@@ -143,12 +147,6 @@ header h1{
 header p{
   margin:0;
   opacity:.88;
-}
-
-.header-content{
-  max-width:1200px;
-  margin:auto;
-  position:relative;
 }
 
 .logout-btn{
@@ -168,7 +166,7 @@ header p{
 
 
 /* =========================================================
-   MAIN CONTAINER
+   MAIN
 ========================================================= */
 
 .container{
@@ -207,27 +205,34 @@ textarea:focus{
   box-shadow:0 0 0 3px #1f8b6b18;
 }
 
-.search{
+
+/* SEARCH */
+
+.search-wrapper{
   flex:1;
   min-width:240px;
+  position:relative;
 }
+
+.search{
+  width:100%;
+}
+
+.search-count{
+  position:absolute;
+  right:12px;
+  top:50%;
+  transform:translateY(-50%);
+  font-size:12px;
+  color:var(--muted);
+  pointer-events:none;
+}
+
+
+/* DROPDOWN */
 
 .student-dropdown{
   min-width:280px;
-  cursor:pointer;
-  background:white;
-}
-
-.student-dropdown:focus{
-  border-color:var(--green2);
-  box-shadow:0 0 0 3px #1f8b6b18;
-}
-
-button{
-  border:0;
-  border-radius:10px;
-  padding:11px 17px;
-  font-weight:bold;
   cursor:pointer;
 }
 
@@ -259,9 +264,17 @@ button{
   background:#ffe4e4;
 }
 
+button{
+  border:0;
+  border-radius:10px;
+  padding:11px 17px;
+  font-weight:bold;
+  cursor:pointer;
+}
+
 
 /* =========================================================
-   PROFILE CARD
+   PROFILE
 ========================================================= */
 
 .profile-card{
@@ -275,7 +288,7 @@ button{
 
 
 /* =========================================================
-   EMPTY STATE
+   EMPTY
 ========================================================= */
 
 .empty{
@@ -333,7 +346,7 @@ button{
 
 
 /* =========================================================
-   OVERALL PROGRESS
+   OVERALL
 ========================================================= */
 
 .overall{
@@ -346,7 +359,6 @@ button{
 .overall-header{
   display:flex;
   justify-content:space-between;
-  gap:10px;
   align-items:center;
 }
 
@@ -367,7 +379,11 @@ button{
 .bar span{
   display:block;
   height:100%;
-  background:linear-gradient(90deg,#1f8b6b,#62b991);
+  background:linear-gradient(
+    90deg,
+    #1f8b6b,
+    #62b991
+  );
   border-radius:99px;
   transition:width .3s ease;
 }
@@ -428,7 +444,6 @@ button{
   cursor:pointer;
   font-size:17px;
   padding:0;
-  transition:.15s;
 }
 
 .star:hover{
@@ -464,7 +479,7 @@ button{
 
 
 /* =========================================================
-   ASSESSMENT HISTORY
+   HISTORY
 ========================================================= */
 
 .history-header{
@@ -556,7 +571,6 @@ tbody tr:hover{
 label{
   font-size:13px;
   font-weight:bold;
-  color:#42554e;
 }
 
 textarea{
@@ -600,7 +614,7 @@ textarea{
     flex-direction:column;
   }
 
-  .search,
+  .search-wrapper,
   .student-dropdown,
   .toolbar button{
     width:100%;
@@ -624,43 +638,16 @@ textarea{
 
 }
 
-
-/* =========================================================
-   LOADING
-========================================================= */
-
-.loading{
-  text-align:center;
-  padding:50px;
-  color:var(--muted);
-}
-
-.spinner{
-  display:inline-block;
-  width:30px;
-  height:30px;
-  border:3px solid #dce7e2;
-  border-top-color:var(--green);
-  border-radius:50%;
-  animation:spin .8s linear infinite;
-  margin-bottom:10px;
-}
-
-@keyframes spin{
-  to{
-    transform:rotate(360deg);
-  }
-}
-
 </style>
 
 </head>
+
 
 <body>
 
 
 <!-- =======================================================
-     LOGIN SCREEN
+     LOGIN
 ======================================================== -->
 
 <div id="loginScreen">
@@ -776,22 +763,33 @@ textarea{
 
 
   <!-- =====================================================
-       TOOLBAR
+       SEARCH / STUDENT SELECTOR
   ====================================================== -->
 
   <div class="toolbar">
 
-    <!-- Search -->
 
-    <input
-      id="search"
-      class="search"
-      type="search"
-      placeholder="🔍 Search student name..."
-    >
+    <!-- SEARCH -->
+
+    <div class="search-wrapper">
+
+      <input
+        id="search"
+        class="search"
+        type="search"
+        autocomplete="off"
+        placeholder="🔍 Search student name..."
+      >
+
+      <span
+        id="searchCount"
+        class="search-count"
+      ></span>
+
+    </div>
 
 
-    <!-- Student Dropdown -->
+    <!-- STUDENT DROPDOWN -->
 
     <select
       id="studentDropdown"
@@ -805,7 +803,7 @@ textarea{
     </select>
 
 
-    <!-- Add Student -->
+    <!-- ADD STUDENT -->
 
     <button
       class="primary"
@@ -837,8 +835,8 @@ textarea{
       </h2>
 
       <p>
-        Use the dropdown above to select a student
-        and view their progress.
+        Search for a student or select one
+        from the dropdown above.
       </p>
 
     </div>
@@ -849,7 +847,7 @@ textarea{
 
 
 <!-- =======================================================
-     ADD / EDIT STUDENT MODAL
+     STUDENT MODAL
 ======================================================== -->
 
 <div
@@ -867,8 +865,6 @@ textarea{
     <div class="form-grid">
 
 
-      <!-- Student Name -->
-
       <div>
 
         <label>
@@ -883,8 +879,6 @@ textarea{
 
       </div>
 
-
-      <!-- Status -->
 
       <div>
 
@@ -910,8 +904,6 @@ textarea{
       </div>
 
 
-      <!-- Notes -->
-
       <div>
 
         <label>
@@ -927,8 +919,6 @@ textarea{
 
     </div>
 
-
-    <!-- Modal Buttons -->
 
     <div class="modal-actions">
 
@@ -958,11 +948,6 @@ textarea{
 ======================================================== -->
 
 <script type="module">
-
-
-/* =========================================================
-   FIREBASE IMPORTS
-========================================================= */
 
 import {
   initializeApp
@@ -1019,16 +1004,17 @@ const firebaseConfig = {
 
 
 /* =========================================================
-   INITIALIZE FIREBASE
+   INITIALIZE
 ========================================================= */
 
 const app =
   initializeApp(firebaseConfig);
 
-
 const db =
   getFirestore(app);
 
+const auth =
+  getAuth(app);
 
 const studentsCollection =
   collection(
@@ -1037,12 +1023,31 @@ const studentsCollection =
   );
 
 
-const auth =
-  getAuth(app);
+/* =========================================================
+   GLOBAL DATA
+========================================================= */
+
+const skills = [
+
+  "Forehand Drive",
+  "Backhand Drive",
+  "Dink",
+  "Serve",
+  "Return",
+  "Volley"
+
+];
+
+
+let students = [];
+
+let selectedId = null;
+
+let editingId = null;
 
 
 /* =========================================================
-   LOGIN DISPLAY
+   LOGIN
 ========================================================= */
 
 function showLogin(){
@@ -1050,17 +1055,6 @@ function showLogin(){
   document.getElementById(
     "loginScreen"
   ).style.display = "flex";
-
-
-  setTimeout(
-    () =>
-      document
-        .getElementById(
-          "loginUsername"
-        )
-        .focus(),
-    50
-  );
 
 }
 
@@ -1073,10 +1067,6 @@ function hideLogin(){
 
 }
 
-
-/* =========================================================
-   LOGIN
-========================================================= */
 
 window.login =
 async function(event){
@@ -1107,23 +1097,8 @@ async function(event){
     );
 
 
-  const button =
-    event.submitter;
-
-
   error.style.display =
     "none";
-
-
-  if(button){
-
-    button.disabled =
-      true;
-
-    button.textContent =
-      "Logging in...";
-
-  }
 
 
   try{
@@ -1134,54 +1109,24 @@ async function(event){
       password
     );
 
-
-    document.getElementById(
-      "loginPassword"
-    ).value = "";
-
   }
 
-  catch(err){
+  catch(errorObject){
 
-    console.error(err);
-
+    console.error(
+      errorObject
+    );
 
     error.textContent =
       "Incorrect email or password.";
 
-
     error.style.display =
       "block";
-
-
-    document
-      .getElementById(
-        "loginPassword"
-      )
-      .select();
-
-  }
-
-  finally{
-
-    if(button){
-
-      button.disabled =
-        false;
-
-      button.textContent =
-        "Login";
-
-    }
 
   }
 
 };
 
-
-/* =========================================================
-   LOGOUT
-========================================================= */
 
 window.logout =
 async function(){
@@ -1189,34 +1134,6 @@ async function(){
   await signOut(auth);
 
 };
-
-
-/* =========================================================
-   SKILLS
-========================================================= */
-
-const skills = [
-
-  "Forehand Drive",
-
-  "Backhand Drive",
-
-  "Dink",
-
-  "Serve",
-
-  "Return",
-
-  "Volley"
-
-];
-
-
-let students = [];
-
-let selectedId = null;
-
-let editingId = null;
 
 
 /* =========================================================
@@ -1242,15 +1159,11 @@ async function loadStudents(){
       );
 
 
-    /* -----------------------------------------------
-       Make sure every student has proper data
-    ------------------------------------------------ */
-
     students.forEach(
-      s => {
+      student => {
 
-        s.progress =
-          s.progress || {};
+        student.progress =
+          student.progress || {};
 
 
         skills.forEach(
@@ -1261,11 +1174,11 @@ async function loadStudents(){
 
 
             if(
-              typeof s.progress[key]
+              typeof student.progress[key]
               !== "number"
             ){
 
-              s.progress[key] =
+              student.progress[key] =
                 0;
 
             }
@@ -1274,49 +1187,47 @@ async function loadStudents(){
         );
 
 
-        s.history =
+        student.history =
           Array.isArray(
-            s.history
+            student.history
           )
-            ? s.history
+            ? student.history
             : [];
 
 
-        s.status =
-          s.status ||
+        student.status =
+          student.status ||
           "Active";
 
 
-        s.notes =
-          s.notes ||
+        student.notes =
+          student.notes ||
           "";
 
       }
     );
 
 
-    /* -----------------------------------------------
-       Sort students alphabetically
-    ------------------------------------------------ */
-
-    students.sort(
-      (a,b) =>
-        a.name.localeCompare(
-          b.name
-        )
-    );
+    sortStudents();
 
 
-    /* -----------------------------------------------
-       Select first student
-    ------------------------------------------------ */
+    if(students.length){
 
-    selectedId =
-      students[0]?.id ||
-      null;
+      selectedId =
+        students[0].id;
+
+    }
+    else{
+
+      selectedId =
+        null;
+
+    }
 
 
     renderStudentDropdown();
+
+    updateSearchCount();
 
     renderProfile();
 
@@ -1325,14 +1236,13 @@ async function loadStudents(){
   catch(error){
 
     console.error(
-      "Firestore load error:",
+      "Could not load students:",
       error
     );
 
 
     alert(
-      "Could not load students from Firebase. " +
-      "Check your Firebase configuration and Firestore rules."
+      "Could not load students from Firebase."
     );
 
   }
@@ -1341,10 +1251,32 @@ async function loadStudents(){
 
 
 /* =========================================================
-   RENDER STUDENT DROPDOWN
+   SORT STUDENTS
 ========================================================= */
 
-function renderStudentDropdown(){
+function sortStudents(){
+
+  students.sort(
+    (a,b) =>
+      a.name.localeCompare(
+        b.name,
+        undefined,
+        {
+          sensitivity:"base"
+        }
+      )
+  );
+
+}
+
+
+/* =========================================================
+   RENDER DROPDOWN
+========================================================= */
+
+function renderStudentDropdown(
+  filteredStudents = null
+){
 
   const dropdown =
     document.getElementById(
@@ -1352,47 +1284,264 @@ function renderStudentDropdown(){
     );
 
 
-  const currentValue =
-    selectedId || "";
+  const list =
+    filteredStudents ||
+    students;
 
 
-  dropdown.innerHTML = `
+  dropdown.innerHTML = "";
 
-    <option value="">
-      Select Student
-    </option>
 
-    ${
-      students
-        .slice()
-        .sort(
-          (a,b) =>
-            a.name.localeCompare(
-              b.name
-            )
-        )
-        .map(
-          s => `
+  /* Default option */
 
-            <option
-              value="${s.id}"
-              ${
-                s.id === currentValue
-                  ? "selected"
-                  : ""
-              }
-            >
+  const defaultOption =
+    document.createElement(
+      "option"
+    );
 
-              ${escapeHtml(s.name)}
 
-            </option>
+  defaultOption.value =
+    "";
 
-          `
-        )
-        .join("")
+
+  defaultOption.textContent =
+    list.length
+      ? "Select Student"
+      : "No students found";
+
+
+  dropdown.appendChild(
+    defaultOption
+  );
+
+
+  /* Student options */
+
+  list.forEach(
+    student => {
+
+      const option =
+        document.createElement(
+          "option"
+        );
+
+
+      option.value =
+        student.id;
+
+
+      option.textContent =
+        student.name;
+
+
+      if(
+        student.id ===
+        selectedId
+      ){
+
+        option.selected =
+          true;
+
+      }
+
+
+      dropdown.appendChild(
+        option
+      );
+
+    }
+  );
+
+
+  /*
+    If selected student isn't
+    in filtered list, show blank.
+  */
+
+  if(
+    !list.some(
+      s =>
+        s.id === selectedId
+    )
+  ){
+
+    dropdown.value =
+      "";
+
+  }
+
+}
+
+
+/* =========================================================
+   SEARCH FUNCTION
+========================================================= */
+
+const searchInput =
+  document.getElementById(
+    "search"
+  );
+
+
+searchInput.addEventListener(
+  "input",
+  function(){
+
+    const query =
+      this.value
+        .trim()
+        .toLowerCase();
+
+
+    /* -----------------------------------------------
+       No search
+    ------------------------------------------------ */
+
+    if(!query){
+
+      renderStudentDropdown(
+        students
+      );
+
+      updateSearchCount();
+
+      return;
+
     }
 
-  `;
+
+    /* -----------------------------------------------
+       Find matching students
+    ------------------------------------------------ */
+
+    const matches =
+      students.filter(
+        student =>
+          student.name
+            .toLowerCase()
+            .includes(query)
+      );
+
+
+    /* -----------------------------------------------
+       Update dropdown
+    ------------------------------------------------ */
+
+    renderStudentDropdown(
+      matches
+    );
+
+
+    updateSearchCount(
+      matches.length
+    );
+
+
+    /* -----------------------------------------------
+       Exact name match
+    ------------------------------------------------ */
+
+    const exactMatch =
+      matches.find(
+        student =>
+          student.name
+            .toLowerCase() ===
+          query
+      );
+
+
+    if(exactMatch){
+
+      selectedId =
+        exactMatch.id;
+
+
+      renderStudentDropdown(
+        matches
+      );
+
+
+      renderProfile();
+
+      return;
+
+    }
+
+
+    /* -----------------------------------------------
+       Only one result
+    ------------------------------------------------ */
+
+    if(
+      matches.length === 1
+    ){
+
+      selectedId =
+        matches[0].id;
+
+
+      renderStudentDropdown(
+        matches
+      );
+
+
+      renderProfile();
+
+    }
+
+  }
+);
+
+
+/* =========================================================
+   SEARCH COUNT
+========================================================= */
+
+function updateSearchCount(
+  count = null
+){
+
+  const element =
+    document.getElementById(
+      "searchCount"
+    );
+
+
+  const query =
+    searchInput
+      .value
+      .trim();
+
+
+  if(!query){
+
+    element.textContent =
+      "";
+
+    return;
+
+  }
+
+
+  if(count === null){
+
+    count =
+      students.filter(
+        student =>
+          student.name
+            .toLowerCase()
+            .includes(
+              query.toLowerCase()
+            )
+      ).length;
+
+  }
+
+
+  element.textContent =
+    count === 1
+      ? "1 found"
+      : `${count} found`;
 
 }
 
@@ -1421,104 +1570,27 @@ document
 
 
 /* =========================================================
-   SEARCH
-========================================================= */
-
-document
-  .getElementById(
-    "search"
-  )
-  .addEventListener(
-    "input",
-    function(){
-
-      const query =
-        this.value
-          .trim()
-          .toLowerCase();
-
-
-      const dropdown =
-        document.getElementById(
-          "studentDropdown"
-        );
-
-
-      const filtered =
-        students.filter(
-          s =>
-            s.name
-              .toLowerCase()
-              .includes(query)
-        );
-
-
-      /*
-        Rebuild dropdown based
-        on search result
-      */
-
-      dropdown.innerHTML = `
-
-        <option value="">
-          ${
-            filtered.length
-              ? "Select Student"
-              : "No students found"
-          }
-        </option>
-
-        ${
-          filtered
-            .map(
-              s => `
-
-                <option
-                  value="${s.id}"
-                  ${
-                    s.id === selectedId
-                      ? "selected"
-                      : ""
-                  }
-                >
-
-                  ${escapeHtml(s.name)}
-
-                </option>
-
-              `
-            )
-            .join("")
-        }
-
-      `;
-
-    }
-  );
-
-
-/* =========================================================
    RENDER PROFILE
 ========================================================= */
 
 function renderProfile(){
 
-  const s =
-    students.find(
-      x =>
-        x.id === selectedId
-    );
-
-
-  const box =
+  const profile =
     document.getElementById(
       "profile"
     );
 
 
-  if(!s){
+  const student =
+    students.find(
+      s =>
+        s.id === selectedId
+    );
 
-    box.innerHTML = `
+
+  if(!student){
+
+    profile.innerHTML = `
 
       <div class="empty">
 
@@ -1531,8 +1603,8 @@ function renderProfile(){
         </h2>
 
         <p>
-          Use the dropdown above to select
-          a student and view their progress.
+          Search for a student or select
+          one from the dropdown above.
         </p>
 
       </div>
@@ -1544,36 +1616,31 @@ function renderProfile(){
   }
 
 
-  const current =
-    s.progress;
+  const average =
+    skills.reduce(
+      (total,skill) =>
+        total +
+        (
+          student.progress[
+            skillKey(skill)
+          ] || 0
+        ),
+      0
+    ) / skills.length;
 
 
-  const avg =
-    Object
-      .values(current)
-      .reduce(
-        (a,b) =>
-          a + b,
-        0
-      )
-      /
-      skills.length;
-
-
-  box.innerHTML = `
-
-    <!-- PROFILE HEADER -->
+  profile.innerHTML = `
 
     <div class="profile-head">
 
       <div>
 
         <h2>
-          ${escapeHtml(s.name)}
+          ${escapeHtml(student.name)}
         </h2>
 
         <span class="badge">
-          ${escapeHtml(s.status)}
+          ${escapeHtml(student.status)}
         </span>
 
       </div>
@@ -1583,7 +1650,7 @@ function renderProfile(){
 
         <button
           class="secondary"
-          onclick="openStudentModal('${s.id}')"
+          onclick="openStudentModal('${student.id}')"
         >
           ✏️ Edit Student
         </button>
@@ -1591,7 +1658,7 @@ function renderProfile(){
 
         <button
           class="danger"
-          onclick="deleteStudent('${s.id}')"
+          onclick="deleteStudent('${student.id}')"
         >
           🗑 Delete
         </button>
@@ -1601,7 +1668,7 @@ function renderProfile(){
     </div>
 
 
-    <!-- OVERALL PROGRESS -->
+    <!-- OVERALL -->
 
     <div class="overall">
 
@@ -1612,7 +1679,7 @@ function renderProfile(){
         </strong>
 
         <span class="overall-score">
-          ${avg.toFixed(1)} / 5
+          ${average.toFixed(1)} / 5
         </span>
 
       </div>
@@ -1622,7 +1689,7 @@ function renderProfile(){
 
         <span
           style="
-            width:${avg / 5 * 100}%
+            width:${(average / 5) * 100}%
           "
         ></span>
 
@@ -1642,7 +1709,7 @@ function renderProfile(){
       <div>
         ${
           escapeHtml(
-            s.notes ||
+            student.notes ||
             "No general notes."
           )
         }
@@ -1664,8 +1731,9 @@ function renderProfile(){
         skills
           .map(
             skill =>
-              skillCard(
-                skill
+              createSkillCard(
+                skill,
+                student
               )
           )
           .join("")
@@ -1674,7 +1742,7 @@ function renderProfile(){
     </div>
 
 
-    <!-- ASSESSMENT HISTORY -->
+    <!-- HISTORY -->
 
     <div class="history-header">
 
@@ -1693,7 +1761,7 @@ function renderProfile(){
     </div>
 
 
-    ${historyTable(s)}
+    ${createHistoryTable(student)}
 
   `;
 
@@ -1704,21 +1772,17 @@ function renderProfile(){
    SKILL CARD
 ========================================================= */
 
-function skillCard(skill){
+function createSkillCard(
+  skill,
+  student
+){
 
   const key =
     skillKey(skill);
 
 
-  const student =
-    students.find(
-      x =>
-        x.id === selectedId
-    );
-
-
   const value =
-    student?.progress[key] ||
+    student.progress[key] ||
     0;
 
 
@@ -1744,17 +1808,16 @@ function skillCard(skill){
         ${
           [1,2,3,4,5]
             .map(
-              n => `
+              number => `
 
                 <button
                   type="button"
                   class="star ${
-                    n <= value
+                    number <= value
                       ? "on"
                       : ""
                   }"
-                  onclick="setSkill('${key}',${n})"
-                  title="Rate ${skill} ${n}/5"
+                  onclick="setSkill('${key}',${number})"
                 >
                   ★
                 </button>
@@ -1783,29 +1846,23 @@ async function(
   value
 ){
 
-  const s =
+  const student =
     students.find(
-      x =>
-        x.id === selectedId
+      s =>
+        s.id === selectedId
     );
 
 
-  if(!s)
+  if(!student)
     return;
 
 
-  /* Update locally */
-
-  s.progress[key] =
+  student.progress[key] =
     value;
 
 
-  /* Update screen */
-
   renderProfile();
 
-
-  /* Save to Firebase */
 
   try{
 
@@ -1814,12 +1871,12 @@ async function(
       doc(
         db,
         "students",
-        s.id
+        student.id
       ),
 
       {
         progress:
-          s.progress
+          student.progress
       }
 
     );
@@ -1829,13 +1886,12 @@ async function(
   catch(error){
 
     console.error(
-      "Firestore skill save error:",
       error
     );
 
 
     alert(
-      "Could not save the skill rating to Firebase."
+      "Could not save the skill rating."
     );
 
   }
@@ -1850,30 +1906,35 @@ async function(
 window.addAssessment =
 async function(){
 
-  const s =
+  const student =
     students.find(
-      x =>
-        x.id === selectedId
+      s =>
+        s.id === selectedId
     );
 
 
-  if(!s)
+  if(!student)
     return;
 
 
-  const today =
+  const date =
     new Date()
       .toISOString()
       .slice(0,10);
 
 
-  s.history.unshift({
+  const assessment = {
 
-    date:today,
+    date:date,
 
-    ...s.progress
+    ...student.progress
 
-  });
+  };
+
+
+  student.history.unshift(
+    assessment
+  );
 
 
   try{
@@ -1883,12 +1944,12 @@ async function(){
       doc(
         db,
         "students",
-        s.id
+        student.id
       ),
 
       {
         history:
-          s.history
+          student.history
       }
 
     );
@@ -1901,13 +1962,12 @@ async function(){
   catch(error){
 
     console.error(
-      "Firestore assessment save error:",
       error
     );
 
 
     alert(
-      "Could not save the assessment to Firebase."
+      "Could not save assessment."
     );
 
   }
@@ -1919,9 +1979,14 @@ async function(){
    HISTORY TABLE
 ========================================================= */
 
-function historyTable(s){
+function createHistoryTable(
+  student
+){
 
-  if(!s.history.length){
+  if(
+    !student.history ||
+    !student.history.length
+  ){
 
     return `
 
@@ -1931,8 +1996,7 @@ function historyTable(s){
 
         <br><br>
 
-        Rate the skills above,
-        then click
+        Rate the skills above and click
         <strong>Save Assessment</strong>.
 
       </div>
@@ -1959,8 +2023,8 @@ function historyTable(s){
             ${
               skills
                 .map(
-                  x =>
-                    `<th>${x}</th>`
+                  skill =>
+                    `<th>${skill}</th>`
                 )
                 .join("")
             }
@@ -1973,29 +2037,29 @@ function historyTable(s){
         <tbody>
 
           ${
-            s.history
+            student.history
               .map(
-                h => `
+                assessment => `
 
                   <tr>
 
                     <td>
-                      ${h.date}
+                      ${escapeHtml(
+                        assessment.date || ""
+                      )}
                     </td>
 
                     ${
                       skills
                         .map(
-                          x => `
+                          skill => `
 
                             <td>
-
                               ${
-                                h[
-                                  skillKey(x)
+                                assessment[
+                                  skillKey(skill)
                                 ] || 0
                               }/5
-
                             </td>
 
                           `
@@ -2022,37 +2086,21 @@ function historyTable(s){
 
 
 /* =========================================================
-   SKILL KEY
-========================================================= */
-
-function skillKey(s){
-
-  return s
-    .toLowerCase()
-    .replaceAll(
-      " ",
-      "_"
-    );
-
-}
-
-
-/* =========================================================
-   OPEN STUDENT MODAL
+   ADD / EDIT STUDENT
 ========================================================= */
 
 window.openStudentModal =
-function(id=null){
+function(id = null){
 
   editingId =
     id;
 
 
-  const s =
+  const student =
     id
       ? students.find(
-          x =>
-            x.id === id
+          s =>
+            s.id === id
         )
       : null;
 
@@ -2060,7 +2108,7 @@ function(id=null){
   document.getElementById(
     "modalTitle"
   ).textContent =
-    s
+    student
       ? "Edit Student"
       : "Add Student";
 
@@ -2068,22 +2116,19 @@ function(id=null){
   document.getElementById(
     "studentName"
   ).value =
-    s?.name ||
-    "";
+    student?.name || "";
 
 
   document.getElementById(
     "studentStatus"
   ).value =
-    s?.status ||
-    "Active";
+    student?.status || "Active";
 
 
   document.getElementById(
     "studentNotes"
   ).value =
-    s?.notes ||
-    "";
+    student?.notes || "";
 
 
   document
@@ -2095,21 +2140,20 @@ function(id=null){
 
 
   setTimeout(
-    () =>
+    () => {
+
       document
         .getElementById(
           "studentName"
         )
-        .focus(),
+        .focus();
+
+    },
     50
   );
 
 };
 
-
-/* =========================================================
-   CLOSE MODAL
-========================================================= */
 
 window.closeStudentModal =
 function(){
@@ -2172,30 +2216,28 @@ async function(){
 
   try{
 
-    /* =====================================================
-       EDIT EXISTING STUDENT
-    ====================================================== */
+    /* EDIT */
 
     if(editingId){
 
-      const s =
+      const student =
         students.find(
-          x =>
-            x.id === editingId
+          s =>
+            s.id === editingId
         );
 
 
-      if(!s)
+      if(!student)
         return;
 
 
-      s.name =
+      student.name =
         name;
 
-      s.status =
+      student.status =
         status;
 
-      s.notes =
+      student.notes =
         notes;
 
 
@@ -2204,34 +2246,25 @@ async function(){
         doc(
           db,
           "students",
-          s.id
+          student.id
         ),
 
         {
-
-          name:
-            s.name,
-
-          status:
-            s.status,
-
-          notes:
-            s.notes
-
+          name:name,
+          status:status,
+          notes:notes
         }
 
       );
 
 
       selectedId =
-        s.id;
+        student.id;
 
     }
 
 
-    /* =====================================================
-       ADD NEW STUDENT
-    ====================================================== */
+    /* ADD */
 
     else{
 
@@ -2264,7 +2297,7 @@ async function(){
       };
 
 
-      const docRef =
+      const reference =
         await addDoc(
           studentsCollection,
           newStudent
@@ -2274,7 +2307,7 @@ async function(){
       students.push({
 
         id:
-          docRef.id,
+          reference.id,
 
         ...newStudent
 
@@ -2282,34 +2315,31 @@ async function(){
 
 
       selectedId =
-        docRef.id;
+        reference.id;
 
     }
 
 
-    /* Sort alphabetically */
-
-    students.sort(
-      (a,b) =>
-        a.name.localeCompare(
-          b.name
-        )
-    );
+    sortStudents();
 
 
     closeStudentModal();
 
 
     /*
-      Rebuild dropdown
+      Clear search so the newly
+      saved student is visible.
     */
+
+    searchInput.value =
+      "";
+
+
+    updateSearchCount();
+
 
     renderStudentDropdown();
 
-
-    /*
-      Show selected student
-    */
 
     renderProfile();
 
@@ -2318,13 +2348,12 @@ async function(){
   catch(error){
 
     console.error(
-      "Firestore student save error:",
       error
     );
 
 
     alert(
-      "Could not save the student to Firebase."
+      "Could not save student."
     );
 
   }
@@ -2339,25 +2368,20 @@ async function(){
 window.deleteStudent =
 async function(id){
 
-  const s =
+  const student =
     students.find(
-      x =>
-        x.id === id
+      s =>
+        s.id === id
     );
 
 
-  if(
-    !s
-  ){
-
+  if(!student)
     return;
-
-  }
 
 
   const confirmed =
     confirm(
-      `Delete ${s.name}? This will remove all progress history.`
+      `Delete ${student.name}? This will remove all progress history.`
     );
 
 
@@ -2380,30 +2404,26 @@ async function(id){
 
     students =
       students.filter(
-        x =>
-          x.id !== id
+        s =>
+          s.id !== id
       );
 
 
-    /*
-      Select another student
-    */
-
     selectedId =
-      students[0]?.id ||
-      null;
+      students.length
+        ? students[0].id
+        : null;
 
 
-    /*
-      Refresh dropdown
-    */
+    searchInput.value =
+      "";
+
+
+    updateSearchCount();
+
 
     renderStudentDropdown();
 
-
-    /*
-      Refresh profile
-    */
 
     renderProfile();
 
@@ -2412,13 +2432,12 @@ async function(id){
   catch(error){
 
     console.error(
-      "Firestore delete error:",
       error
     );
 
 
     alert(
-      "Could not delete the student from Firebase."
+      "Could not delete the student."
     );
 
   }
@@ -2427,41 +2446,51 @@ async function(id){
 
 
 /* =========================================================
+   SKILL KEY
+========================================================= */
+
+function skillKey(
+  value
+){
+
+  return value
+    .toLowerCase()
+    .replaceAll(
+      " ",
+      "_"
+    );
+
+}
+
+
+/* =========================================================
    ESCAPE HTML
 ========================================================= */
 
-function escapeHtml(str){
+function escapeHtml(
+  value
+){
 
-  return String(str).replace(
-
+  return String(
+    value ?? ""
+  ).replace(
     /[&<>"']/g,
+    character => ({
 
-    c => ({
+      "&":"&amp;",
+      "<":"&lt;",
+      ">":"&gt;",
+      '"':"&quot;",
+      "'":"&#039;"
 
-      '&':
-        '&amp;',
-
-      '<':
-        '&lt;',
-
-      '>':
-        '&gt;',
-
-      '"':
-        '&quot;',
-
-      "'":
-        '&#039;'
-
-    }[c])
-
+    }[character])
   );
 
 }
 
 
 /* =========================================================
-   CLOSE MODAL WHEN CLICKING OUTSIDE
+   CLOSE MODAL OUTSIDE
 ========================================================= */
 
 document
@@ -2470,10 +2499,10 @@ document
   )
   .addEventListener(
     "click",
-    function(e){
+    function(event){
 
       if(
-        e.target.id ===
+        event.target.id ===
         "studentModal"
       ){
 
@@ -2495,26 +2524,12 @@ onAuthStateChanged(
 
     if(user){
 
-      /*
-        User is logged in
-      */
-
       hideLogin();
-
-
-      /*
-        Load students
-      */
 
       await loadStudents();
 
     }
-
     else{
-
-      /*
-        User logged out
-      */
 
       students =
         [];
@@ -2523,23 +2538,11 @@ onAuthStateChanged(
         null;
 
 
-      /*
-        Show login
-      */
-
       showLogin();
 
 
-      /*
-        Reset dropdown
-      */
-
       renderStudentDropdown();
 
-
-      /*
-        Reset profile
-      */
 
       renderProfile();
 
